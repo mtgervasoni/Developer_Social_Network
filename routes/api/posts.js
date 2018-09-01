@@ -137,6 +137,13 @@ router.post(
   "/unlike/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { errors, isValid } = validatePostInput(req.body);
+
+    //Check Validation:
+    if (!isValid) {
+      //If any errors send 400 with errors object
+      return res.status(400).json(errors);
+    }
     const error = "Can't Like, Post not found";
 
     Profile.findOne({ user: req.user.id }).then(profile => {
@@ -162,6 +169,70 @@ router.post(
         })
         .catch(err => res.status(404).json(error));
     });
+  }
+);
+
+//@route POST request to api/posts/comment/:id
+//@desc: Comment on a post (using the post id)
+//@access: Private
+router.post(
+  "/comment/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validatePostInput(req.body);
+
+    //Check Validation:
+    if (!isValid) {
+      //If any errors send 400 with errors object
+      return res.status(400).json(errors);
+    }
+    Post.findById(req.params.id)
+      .then(post => {
+        const newComment = {
+          text: req.body.text,
+          name: req.body.name,
+          avatar: req.body.avatar,
+          user: req.body.id
+        };
+
+        post.comments.unshift(newComment);
+
+        post.save().then(post => res.json(post));
+      })
+      .catch(err => res.status(404).json({ postnotfound: "No post found" }));
+  }
+);
+
+//@route Delete request to api/posts/comment/:id/:comment_id
+//@desc: Delete a comment (using the post id)
+//@access: Private
+router.delete(
+  "/comment/:id/:comment_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Post.findById(req.params.id)
+      .then(post => {
+        //Check to see if comment exist
+        if (
+          post.comments.filter(
+            comments => comments._id.toString() === req.params.comment_id
+          ).length === 0
+        ) {
+          return res
+            .status(404)
+            .json({ commentdoesntexist: "Comment does not exist" });
+        }
+        //Get remove index:
+        const removeIndex = post.comments
+          .map(comments => comments._id.toString())
+          .indexOf(req.params.comment_id);
+
+        //splice out of array:
+        post.comments.splice(removeIndex, 1);
+
+        post.save().then(post => res.json(post));
+      })
+      .catch(err => res.status(404).json({ postnotfound: "No post found" }));
   }
 );
 
