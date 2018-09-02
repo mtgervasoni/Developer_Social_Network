@@ -62,7 +62,7 @@ export default class Register extends Component {
                       onChange={this.onChangeHandler.bind(this)}
                       //   required
                     />
-                    <div class="invalid-feedback">{errors.name}</div>
+                    <div className="invalid-feedback">{errors.name}</div>
                   </div>
                   <div className="form-group">
                     <input
@@ -75,7 +75,7 @@ export default class Register extends Component {
                       onChange={this.onChangeHandler.bind(this)}
                       name="email"
                     />
-                    <div class="invalid-feedback">{errors.email}</div>
+                    <div className="invalid-feedback">{errors.email}</div>
 
                     <small className="form-text text-muted">
                       This site uses Gravatar so if you want a profile image,
@@ -93,7 +93,7 @@ export default class Register extends Component {
                       value={this.state.password}
                       onChange={this.onChangeHandler.bind(this)}
                     />
-                    <div class="invalid-feedback">{errors.password}</div>
+                    <div className="invalid-feedback">{errors.password}</div>
                   </div>
                   <div className="form-group">
                     <input
@@ -106,7 +106,7 @@ export default class Register extends Component {
                       value={this.state.password2}
                       onChange={this.onChangeHandler.bind(this)}
                     />
-                    <div class="invalid-feedback">{errors.password2}</div>
+                    <div className="invalid-feedback">{errors.password2}</div>
                   </div>
                   <input
                     type="submit"

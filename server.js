@@ -8,10 +8,15 @@ const profile = require("./routes/api/profile");
 const posts = require("./routes/api/posts");
 
 const app = express();
+//Stripe Payment processing
+const stripe = require("stripe")("sk_test_8FszdpnPQNwdCZGQ4BuVNjDY");
 
 //Body Parser MiddleWare:
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+//Stripe:
+app.use(require("body-parser").text());
 
 //DB Config
 const db = require("./config/keys").mongoURI;
@@ -40,3 +45,19 @@ app.use("/api/posts", posts);
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
+
+//Stripe:
+app.post("/charge", async (req, res) => {
+  try {
+    let { status } = await stripe.charges.create({
+      amount: 2000,
+      currency: "usd",
+      description: "An example charge",
+      source: req.body
+    });
+
+    res.json({ status });
+  } catch (err) {
+    res.status(500).end();
+  }
+});
