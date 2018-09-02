@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import axios from "axios";
+import classnames from "classnames";
 
 export default class Register extends Component {
   constructor() {
@@ -26,10 +28,17 @@ export default class Register extends Component {
       password2: this.state.password2
     };
 
-    console.log(newUser);
+    //send info to backend:
+    axios
+      .post("/api/users/register", newUser)
+      .then(res => console.log(res.data))
+      //   .catch(err => console.log(err.response.data));
+      .catch(err => this.setState({ errors: err.response.data }));
   };
 
   render() {
+    const { errors } = this.state;
+
     return (
       <div className="container">
         <div className="register">
@@ -44,23 +53,30 @@ export default class Register extends Component {
                   <div className="form-group">
                     <input
                       type="text"
-                      className="form-control form-control-lg"
+                      className={classnames("form-control form-control-lg", {
+                        "is-invalid": errors.name
+                      })}
                       placeholder="Name"
                       name="name"
                       value={this.state.name}
                       onChange={this.onChangeHandler.bind(this)}
                       //   required
                     />
+                    <div class="invalid-feedback">{errors.name}</div>
                   </div>
                   <div className="form-group">
                     <input
                       type="email"
-                      className="form-control form-control-lg"
+                      className={classnames("form-control form-control-lg", {
+                        "is-invalid": errors.email
+                      })}
                       placeholder="Email Address"
                       value={this.state.email}
                       onChange={this.onChangeHandler.bind(this)}
                       name="email"
                     />
+                    <div class="invalid-feedback">{errors.email}</div>
+
                     <small className="form-text text-muted">
                       This site uses Gravatar so if you want a profile image,
                       use a Gravatar email
@@ -69,22 +85,28 @@ export default class Register extends Component {
                   <div className="form-group">
                     <input
                       type="password"
-                      className="form-control form-control-lg"
+                      className={classnames("form-control form-control-lg", {
+                        "is-invalid": errors.password
+                      })}
                       placeholder="Password"
                       name="password"
                       value={this.state.password}
                       onChange={this.onChangeHandler.bind(this)}
                     />
+                    <div class="invalid-feedback">{errors.password}</div>
                   </div>
                   <div className="form-group">
                     <input
                       type="password"
-                      className="form-control form-control-lg"
+                      className={classnames("form-control form-control-lg", {
+                        "is-invalid": errors.password2
+                      })}
                       placeholder="Confirm Password"
                       name="password2"
                       value={this.state.password2}
                       onChange={this.onChangeHandler.bind(this)}
                     />
+                    <div class="invalid-feedback">{errors.password2}</div>
                   </div>
                   <input
                     type="submit"
