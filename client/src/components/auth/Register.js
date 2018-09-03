@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import axios from "axios";
-import classnames from "classnames";
+import { withRouter } from "react-router-dom";
+// import classnames from "classnames";
 import { connect } from "react-redux";
-import { registeruser } from "../../actions/authActions";
+import { registerUser } from "../../actions/authActions";
+import TextFieldGroup from "../common/TextFieldGroup";
 
 class Register extends Component {
   constructor() {
@@ -15,6 +16,19 @@ class Register extends Component {
       password2: "",
       errors: {}
     };
+  }
+
+  //If logged in, go to dashboard
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
   onChangeHandler = event => {
@@ -31,20 +45,12 @@ class Register extends Component {
       password2: this.state.password2
     };
 
-    this.props.registeruser(newUser);
-
-    //send info to backend:
-    // axios
-    //   .post("/api/users/register", newUser)
-    //   .then(res => console.log(res.data))
-    //   //   .catch(err => console.log(err.response.data));
-    //   .catch(err => this.setState({ errors: err.response.data }));
+    // Send to action type registeruser.
+    this.props.registerUser(newUser, this.props.history);
   };
 
   render() {
     const { errors } = this.state;
-
-    const { user } = this.props.auth;
 
     return (
       <div className="container">
@@ -57,64 +63,40 @@ class Register extends Component {
                   Create your DevConnector account
                 </p>
                 <form onSubmit={this.onSubmit}>
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      className={classnames("form-control form-control-lg", {
-                        "is-invalid": errors.name
-                      })}
-                      placeholder="Name"
-                      name="name"
-                      value={this.state.name}
-                      onChange={this.onChangeHandler.bind(this)}
-                      //   required
-                    />
-                    <div className="invalid-feedback">{errors.name}</div>
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="email"
-                      className={classnames("form-control form-control-lg", {
-                        "is-invalid": errors.email
-                      })}
-                      placeholder="Email Address"
-                      value={this.state.email}
-                      onChange={this.onChangeHandler.bind(this)}
-                      name="email"
-                    />
-                    <div className="invalid-feedback">{errors.email}</div>
-
-                    <small className="form-text text-muted">
-                      This site uses Gravatar so if you want a profile image,
-                      use a Gravatar email
-                    </small>
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="password"
-                      className={classnames("form-control form-control-lg", {
-                        "is-invalid": errors.password
-                      })}
-                      placeholder="Password"
-                      name="password"
-                      value={this.state.password}
-                      onChange={this.onChangeHandler.bind(this)}
-                    />
-                    <div className="invalid-feedback">{errors.password}</div>
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="password"
-                      className={classnames("form-control form-control-lg", {
-                        "is-invalid": errors.password2
-                      })}
-                      placeholder="Confirm Password"
-                      name="password2"
-                      value={this.state.password2}
-                      onChange={this.onChangeHandler.bind(this)}
-                    />
-                    <div className="invalid-feedback">{errors.password2}</div>
-                  </div>
+                  <TextFieldGroup
+                    type="text"
+                    error={errors.name}
+                    placeholder="Name"
+                    name="name"
+                    value={this.state.name}
+                    onChange={this.onChangeHandler}
+                  />
+                  <TextFieldGroup
+                    type="email"
+                    error={errors.email}
+                    placeholder="Email Address"
+                    name="email"
+                    value={this.state.email}
+                    onChange={this.onChangeHandler}
+                    info="This site uses Gravatar so if you want a profile image,
+                      use a Gravatar email"
+                  />
+                  <TextFieldGroup
+                    type="password"
+                    error={errors.password}
+                    placeholder="Password"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.onChangeHandler}
+                  />
+                  <TextFieldGroup
+                    type="password"
+                    error={errors.password2}
+                    placeholder="Confirm Password"
+                    name="password2"
+                    value={this.state.password2}
+                    onChange={this.onChangeHandler}
+                  />
                   <input
                     type="submit"
                     className="btn btn-info btn-block mt-4"
@@ -131,13 +113,15 @@ class Register extends Component {
 
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  errors: state.errors
 });
 export default connect(
   mapStateToProps,
-  { registeruser }
-)(Register);
+  { registerUser }
+)(withRouter(Register));
