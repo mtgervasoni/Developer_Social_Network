@@ -10,6 +10,8 @@ const posts = require("./routes/api/posts");
 const app = express();
 //Stripe Payment processing
 const stripe = require("stripe")("sk_test_8FszdpnPQNwdCZGQ4BuVNjDY");
+// For dotenv (.ENV file with keys)
+// const env = require("dotenv").config();
 
 //Body Parser MiddleWare:
 app.use(bodyParser.urlencoded({ extended: false }));
