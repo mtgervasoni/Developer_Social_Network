@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Provider } from "react-redux";
 
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
@@ -7,28 +8,30 @@ import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import CheckoutPage from "./components/payment/CheckoutPage";
-
+import store from "./Store";
 import "./App.css";
 
 class App extends Component {
   render() {
     return (
-      <Router>
-        <div className="App">
-          <Navbar />
+      <Provider store={store}>
+        <Router>
+          <div className="App">
+            <Navbar />
 
-          <Switch>
-            <Route exact path="/" component={Landing} />
-            {/* <div className="container"> */}
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/checkout" component={CheckoutPage} />
-            {/* </div> */}
-          </Switch>
+            <Switch>
+              <Route exact path="/" component={Landing} />
+              {/* <div className="container"> */}
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/checkout" component={CheckoutPage} />
+              {/* </div> */}
+            </Switch>
 
-          <Footer />
-        </div>
-      </Router>
+            <Footer />
+          </div>
+        </Router>
+      </Provider>
     );
   }
 }
