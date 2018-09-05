@@ -5,6 +5,8 @@ import { getCurrentProfile } from "../../actions/profileActions";
 import { deleteAccount } from "../../actions/profileActions";
 import Spinner from "../common/Spinner";
 import ProfileActions from "./ProfileActions";
+import Experience from "./Experience";
+import Education from "./Education";
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -34,6 +36,8 @@ class Dashboard extends Component {
               Welcome <a href={`/profile/${profile.handle}`}> {user.name}</a>
             </p>
             <ProfileActions />
+            <Experience experience={profile.experience} />
+            <Education experience={profile.education} />
 
             <div style={{ marginBotton: "60px" }}>
               <button className="btn btn-danger" onClick={this.onDeleteClick}>

@@ -189,6 +189,9 @@ class EditProfile extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-8 m-auto">
+                <a href="/dashboard" className="btn btn-light">
+                  Go Back
+                </a>
                 <h1 className="display-4 text-center"> Edit Your Profile</h1>
                 <p className="lead text-center">Edit your information</p>
                 <small className="d-block pb-3">* = required fields</small>
