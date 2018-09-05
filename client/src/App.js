@@ -15,7 +15,7 @@ import "./App.css";
 import Dashboard from "./components/dashboard/Dashboard";
 import { clearProfile } from "./actions/profileActions";
 import PrivateRoute from "./components/common/PrivateRoute";
-
+import CreateProfile from "./components/create-profile/CreateProfile";
 //Check from Token:
 if (localStorage.jwtToken) {
   //set auth token header off
@@ -50,6 +50,7 @@ class App extends Component {
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/checkout" component={CheckoutPage} />
+              <Route exact path="/create-profile" component={CreateProfile} />
             </Switch>
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
