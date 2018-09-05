@@ -15,16 +15,16 @@ module.exports = function validateProfileInput(data) {
     errors.handle = "Handle needs to be between 2 and 40 characters";
   }
 
-  if (Validator.isEmpty(data.handle)) {
-    errors.handle = "Handle is required";
-  }
-
   if (Validator.isEmpty(data.status)) {
-    errors.handle = "Status field is required";
+    errors.status = "Status field is required";
   }
 
   if (Validator.isEmpty(data.skills)) {
-    errors.handle = "Skills field is required";
+    errors.skills = "Skills Field is required";
+  }
+
+  if (Validator.isEmpty(data.handle)) {
+    errors.handle = "Profile handle is required";
   }
 
   if (!isEmpty(data.website)) {
@@ -35,27 +35,27 @@ module.exports = function validateProfileInput(data) {
 
   if (!isEmpty(data.youtube)) {
     if (!Validator.isURL(data.youtube)) {
-      errors.website = "Not a valid URL";
+      errors.youtube = "Not a valid URL";
     }
   }
   if (!isEmpty(data.facebook)) {
     if (!Validator.isURL(data.facebook)) {
-      errors.website = "Not a valid URL";
+      errors.facebook = "Not a valid URL";
     }
   }
   if (!isEmpty(data.twitter)) {
     if (!Validator.isURL(data.twitter)) {
-      errors.website = "Not a valid URL";
+      errors.twitter = "Not a valid URL";
     }
   }
   if (!isEmpty(data.instagram)) {
     if (!Validator.isURL(data.instagram)) {
-      errors.website = "Not a valid URL";
+      errors.instagram = "Not a valid URL";
     }
   }
   if (!isEmpty(data.linkedin)) {
     if (!Validator.isURL(data.linkedin)) {
-      errors.website = "Not a valid URL";
+      errors.linkedin = "Not a valid URL";
     }
   }
 
