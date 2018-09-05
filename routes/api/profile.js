@@ -185,7 +185,7 @@ router.post(
         from: req.body.from,
         to: req.body.to,
         current: req.body.current,
-        description: req.body.decription
+        description: req.body.description
       };
       //Add to experience array in profile
       profile.experience.unshift(newExp);
@@ -216,7 +216,7 @@ router.post(
         from: req.body.from,
         to: req.body.to,
         current: req.body.current,
-        description: req.body.decription
+        description: req.body.description
       };
       //Add to experience array in profile
       profile.education.unshift(newEdu);
